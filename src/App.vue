@@ -8,7 +8,7 @@
           <h4>{{ msg.date }} / {{ msg.authorName }} / {{ msg.authorUrl }}</h4>
           <p>{{ msg.content }}</p>
         </li>
-        <li class="divider" role="presentation"></li>
+<!--        <li class="divider" role="presentation"></li>-->
       </template>
     </ul>
   </div>
@@ -28,7 +28,12 @@ export default {
   methods: {
     getJSON() {
       this.feed = require("./assets/feed.json");
-      console.log(this.feed);
+
+      for (let msg of this.feed) {
+        msg.date = this.setDate(msg.date);
+      }
+
+      console.log("\nFeed:\n", this.feed);
     },
 
     contentTone() {
@@ -99,6 +104,18 @@ export default {
 
       return color;
     },
+
+    setDate(str) {
+      let date = new Date(str);
+
+      let hours = date.getHours();
+      let minutes = date.getMinutes();
+      let day = date.getDate();
+      // let month = date.getMonth();
+      let year = date.getFullYear();
+
+      return `${hours}:${minutes}, ${day} сентября ${year} г`;
+    },
   },
 
   created() {
@@ -121,7 +138,16 @@ export default {
   margin-top: 60px;
 }
 
-span {
-  background-color: green;
+li {
+  border-bottom: 3px solid gray;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0 3%;
+}
+
+p {
+  text-align: start;
 }
 </style>
